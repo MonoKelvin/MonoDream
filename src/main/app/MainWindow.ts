@@ -3,9 +3,20 @@ import { EventEmitter } from 'events';
 import { IMainWindowConfig } from '../../config/Configs';
 // import log from 'electron-log';
 
+// 请求关闭窗口接口
+export interface IRequireCloseWindow {
+    /**
+     * 是否需要关闭
+     * @return {boolean} 如果返回true则会请求窗口关闭，但即使请求通过，如果还有
+     * 其他请求返回false，则该请求会被忽略。
+     */
+    isNeedClose(): boolean;
+}
+
 export default class MainWindow extends EventEmitter {
 
     mBrowserWindow: BrowserWindow | null;
+    mRequireCloseWindowList: IRequireCloseWindow[] = [];
 
     constructor(config: IMainWindowConfig) {
         super();
@@ -20,7 +31,7 @@ export default class MainWindow extends EventEmitter {
         let win: BrowserWindow | null = this.mBrowserWindow;
 
         win.webContents.once('did-finish-load', () => {
-            this.emit('window-ready');
+            this.emit('md::window-ready');
         });
 
         win.webContents.once('did-fail-load', (event, errorCode, errorDescription) => {
@@ -51,29 +62,31 @@ export default class MainWindow extends EventEmitter {
         });
 
         win.on('focus', () => {
-            this.emit('window-focus');
+            this.emit('md::window-focus');
         });
 
-        // Lost focus
         win.on('blur', () => {
-            this.emit('window-blur');
+            this.emit('md::window-blur');
         });
-
-        // ['maximize', 'unmaximize', 'enter-full-screen', 'leave-full-screen'].forEach(channel => {
-        //     win?.on(channel, () => {
-        //         this.emit(`win::window-${channel}`);
-        //         win?.webContents.send(`win::window-${channel}`);
-        //     });
-        // });
 
         // Before closed. We cancel the action and ask the editor further instructions.
         win.on('close', event => {
-            this.emit('window-close');
             event.preventDefault();
+
+            let isNeedClose = true;
+            for (var iter of this.mRequireCloseWindowList) {
+                if (!iter.isNeedClose()) {
+                    isNeedClose = false;
+                    break;
+                }
+            };
+
+            if (isNeedClose) {
+                this.destroy();
+            }
         });
 
         win.on('closed', () => {
-            this.emit('window-closed');
             win = null;
         });
 
@@ -85,7 +98,7 @@ export default class MainWindow extends EventEmitter {
     }
 
     public destroy() {
-        this.emit('window-closed');
+        this.emit('md::window-closed');
         this.removeAllListeners();
 
         this.mBrowserWindow?.destroy();

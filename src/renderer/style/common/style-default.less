@@ -1,13 +1,13 @@
-@import './variables.less';
+@import './theme_light.less';
 
 * {
     padding: 0;
     margin: 0;
     outline: none;
-    font-size: @monoMainFontSize;
+    font-size: @mainFontSize;
     color: @textColor;
     box-sizing: border-box;
-    font-family: @monoFont, 'Microsoft Yahei', Arial, sans-serif;
+    font-family: @mainFont, 'Microsoft Yahei', Arial, sans-serif;
 }
 
 html,
@@ -15,10 +15,7 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-}
-
-body {
-    background-color: #333333;
+    background: @panelBackground;
 }
 
 // ScrollBar
@@ -679,22 +676,107 @@ input[type='range']::-webkit-slider-thumb:hover {
     }
 }
 
-.app {
+#app {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-/** Navigation */
+.window-controls-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    text-align: center;
+    position: relative;
+    padding-right: 10px;
 
-.mono-navigation {
+    .window-control {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-left: 5px;
+        margin-right: 5px;
+        transition: @normalTransition;
+        -webkit-app-region: no-drag !important;
+    }
+
+    .window-minimize {
+        background-color: #e4d47b;
+    }
+
+    .window-minimize:hover {
+        background-color: #d1a512;
+    }
+
+    .window-minimize:active {
+        background-color: #ebbc23;
+    }
+
+    .window-max-restore {
+        background-color: #9adab0;
+    }
+
+    .window-max-restore:hover {
+        background-color: #28b879;
+    }
+
+    .window-max-restore:active {
+        background-color: #38e499;
+    }
+
+    .window-close {
+        background-color: #e6a2ab;
+    }
+
+    .window-close:hover {
+        background-color: #cc4052;
+    }
+
+    .window-close:active {
+        background-color: #eb596d;
+    }
+}
+
+/** Title Bar */
+.title-bar {
+    height: @titleBarHeight;
+    user-select: none;
+    width: 100%;
+    position: fixed;
+    background: transparent;
+    position: fixed;
+    left: 0;
+    top: 0;
+    -webkit-app-region: drag;
+    z-index: 5000;
+}
+
+/** SideBar */
+.side-bar {
+    display: flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-direction: column;
     width: 180px;
     height: 100%;
+    min-width: 160px;
+    position: relative;
+    user-select: none;
+    background: @controlBgNormalColor;
+    z-index: 6000;
+    padding: 10px;
+}
+
+/** Navigation */
+.navigation {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: @monoPanelBg;
 
     >* {
         width: 100%;
@@ -706,25 +788,25 @@ input[type='range']::-webkit-slider-thumb:hover {
     }
 
     .list-item {
-        cursor: pointer;
-        padding: 20px;
-        font-size: @monoLeaderFontSize;
+        padding: 20px 0;
+        font-size: @leaderFontSize;
     }
 }
 
 .nav-item {
+    cursor: pointer;
     font-size: 1em;
-    color: @monoDisableTextColor;
-    margin-left: 20px;
+    color: @subTextColor;
     transition: @normalTransition;
+    text-align: center;
 }
 
 .nav-item:hover {
-    color: @monoDisableTextColor - 3 * @offsetColor;
+    color: @subTextColor - 3 * @offsetColor;
 }
 
 .nav-item-selected {
-    color: @monoTextColor  !important;
+    color: @textColor  !important;
 }
 
 .nav-track-bar {
@@ -733,6 +815,52 @@ input[type='range']::-webkit-slider-thumb:hover {
     height: 1.2em;
     position: absolute;
     border-radius: @smallBorderRadius;
-    color: @monoTextColor  !important;
-    background: @monoTextColor;
+    background: @textColor;
+    transition: @normalTransition;
+}
+
+/** Avatar */
+.avatar-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    align-items: center;
+    padding: @titleBarHeight 0 10px 0;
+
+    .user-name {
+        margin: 20px 0;
+        color: @subTextColor;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.avatar-user,
+.avatar-shadow {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 21;
+    transition: transform 0.3s ease-in-out;
+}
+
+.avatar-user:hover {
+    cursor: pointer;
+    transform: scale(1.12);
+}
+
+.avatar-shadow {
+    z-index: 20;
+    position: absolute;
+    transform: translateY(10px);
+    -webkit-filter: blur(@avatarShadowBlur);
+    -moz-filter: blur(@avatarShadowBlur);
+    -ms-filter: blur(@avatarShadowBlur);
+    filter: blur(@avatarShadowBlur);
 }

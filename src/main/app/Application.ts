@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 // import path from 'path';
 import { defaultWindowOptions } from '../../config/Configs';
 import MainWindow from './MainWindow';
-import { isDev, isOsx, isWindows } from '../../util/Utilities';
+import { isDev, isOsx } from '../../util/Utilities';
 
 export default class Application extends EventEmitter {
     mMainWindow: MainWindow | null;
@@ -30,43 +30,19 @@ export default class Application extends EventEmitter {
 
         app.on('window-all-closed', () => {
             if (!isOsx) {
-                this._onQuit();
                 app.quit();
             }
         });
     }
 
     private _onReady() {
-        if (isOsx) {
-            //app.dock.setMenu(dockMenu);
-        } else if (isWindows) {
-            app.setJumpList([
-                {
-                    type: 'recent'
-                },
-                {
-                    type: 'tasks',
-                    items: [{
-                        type: 'task',
-                        title: '新建窗口',
-                        description: '打开一个新的窗口',
-                        program: process.execPath,
-                        args: '--new-window',
-                        iconPath: process.execPath,
-                        iconIndex: 0
-                    }]
-                }
-            ]);
-        }
-
         this.mMainWindow = new MainWindow({
             page: isDev ? `http://localhost:9080` : `file://${__dirname}/index.html`,
             windowOptions: defaultWindowOptions,
         });
-    }
 
-    public _onQuit() {
-        this.mMainWindow?.destroy();
+        // TODO: 可能有多个窗口需要判断是否关闭
+        this.mMainWindow.on('md::window-closed', app.quit);
     }
 }
 

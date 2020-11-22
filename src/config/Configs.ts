@@ -23,10 +23,13 @@ export interface IMainWindowConfig {
 }
 
 export const defaultWindowOptions: BrowserWindowConstructorOptions = {
-    minWidth: 640,
-    minHeight: 480,
+    width: 800,
+    height: 600,
+    minWidth: 480,
+    minHeight: 360,
     webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         webSecurity: false
     },
     useContentSize: true,
