@@ -2,6 +2,7 @@ import { BrowserWindowConstructorOptions } from "electron";
 
 export interface INavItemOption {
     text: string;
+    pageName: string;
     icon?: string;   // TODO: use class Icon
     enabled?: boolean;
 }

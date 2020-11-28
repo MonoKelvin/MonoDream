@@ -4,19 +4,24 @@ import {
 
 export const appNavItems: INavItemOption[] = [
     {
-        text: '雪泥鸿爪'
+        text: '雪泥鸿爪',
+        pageName: 'dreams'
     },
     {
-        text: '锦囊玉轴'
+        text: '锦囊玉轴',
+        pageName: 'collection'
     },
     {
-        text: '似曾相识'
+        text: '似曾相识',
+        pageName: 'dejavu'
     },
     {
-        text: '改弦易调'
+        text: '改弦易调',
+        pageName: 'settings'
     },
     {
-        text: '雪中送碳'
+        text: '雪中送碳',
+        pageName: 'aid'
     }
 ]
 

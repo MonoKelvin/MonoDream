@@ -1,15 +1,16 @@
 <template>
   <div class="navigation" ref="navigation">
     <div class="nav-item-container">
-      <ul class="mono-list">
-        <nav-item
-          v-for="(item, index) in navItems"
-          :key="index"
-          :index="index"
-          :text="item.text"
-          :actived="currentIndex === index"
-          @navItemClicked="navigate"
-        ></nav-item>
+      <ul class="mono-list" ref="navList">
+        <li class="list-item" v-for="(item, index) in navItems" :key="index">
+          <div
+            class="nav-item text-btn"
+            :class="{ 'nav-item-selected': currentIndex === index }"
+            @click="navigate(item)"
+          >
+            {{ item.text }}
+          </div>
+        </li>
       </ul>
       <div
         ref="trackBar"
@@ -22,13 +23,9 @@
 
 <script>
 import { appNavigationOption } from "./config";
-import NavItem from "./NavItem";
 
 export default {
   name: "navigation",
-  components: {
-    NavItem,
-  },
   data() {
     return {
       navItems: appNavigationOption.items,
@@ -37,21 +34,28 @@ export default {
     };
   },
   mounted() {
-    this.navigate(0);
+    this.navigate(this.navItems[0]);
   },
   methods: {
-    navigate(index) {
-      this.currentIndex = index;
-      this.$nextTick(() => {
-        const selectedItem = this.$el.getElementsByClassName(
-          "nav-item-selected"
-        );
-        if (selectedItem.length != 1) {
-          this.currentIndex = 0;
-          selectedItem[0].classList.add("nav-item-selected");
-        }
-        this.trackBarPos = selectedItem[0].offsetTop;
-      });
+    navigate(item) {
+      const newIndex = this.navItems.indexOf(item);
+      if (newIndex !== this.currentIndex) {
+        this.currentIndex = this.navItems.indexOf(item);
+        this.$router.push({
+          path: `/home/${item.pageName.toLowerCase()}`,
+        });
+      }
+    },
+  },
+  watch: {
+    currentIndex(val, oldVal) {
+      const targets = this.$refs.navList.children[val].getElementsByClassName(
+        "nav-item"
+      );
+      if (targets.length > 0) {
+        this.trackBarPos = targets[0].offsetTop;
+      }
+      // this.trackBarPos = selectedItem.offsetTop;
     },
   },
 };
