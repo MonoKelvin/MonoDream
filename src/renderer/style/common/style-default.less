@@ -141,6 +141,7 @@ input:disabled {
 .mui-button,
 button {
     cursor: pointer;
+    color: @textColor;
     fill: @textColor;
     position: relative;
     display: flex;
@@ -264,11 +265,27 @@ button:active {
     height: 30px;
 }
 
+.btn-rounded {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    box-shadow: 0px 10px 30px #7d7d7f47,
+        0px 0px 10px #7a7d842e;
+    transition: @normalTransition, transform 0.3s ease-in-out;
+}
+
+.btn-rounded:hover {
+    transform: scale(1.08);
+}
+
 .text-btn {
     cursor: pointer;
     color: @subTextColor;
     transition: @normalTransition;
     text-align: center;
+    user-select: none;
+    background: transparent !important;
+    height: auto;
 }
 
 .text-btn:hover {

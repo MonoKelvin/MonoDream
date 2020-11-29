@@ -41,9 +41,10 @@ export default {
       const newIndex = this.navItems.indexOf(item);
       if (newIndex !== this.currentIndex) {
         this.currentIndex = this.navItems.indexOf(item);
-        this.$router.push({
-          path: `/home/${item.pageName.toLowerCase()}`,
-        });
+        const tarRout = `#/home/${item.pageName.toLowerCase()}`;
+        if (this.$route.hash !== tarRout) {
+          this.$router.push({ hash: tarRout });
+        }
       }
     },
   },
@@ -55,7 +56,6 @@ export default {
       if (targets.length > 0) {
         this.trackBarPos = targets[0].offsetTop;
       }
-      // this.trackBarPos = selectedItem.offsetTop;
     },
   },
 };

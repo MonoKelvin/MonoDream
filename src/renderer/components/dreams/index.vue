@@ -4,16 +4,12 @@
     <div class="dreams-labels"></div>
     <div class="dreams-contents"></div>
     <div class="dreams-footer">
-      <div class="d-flex flex-center left">
-        <div class="text-btn">淡而忘之</div>
-        <div class="text-btn">朝花夕拾</div>
-      </div>
-      <div class="center">
-        <div class="btn-rounded"></div>
-      </div>
-      <div class="d-flex flex-center right">
-        <div class="text-btn">什袭珍藏</div>
-        <div class="text-btn">似曾相识</div>
+      <div class="d-flex op-btns">
+        <button class="text-btn">淡而忘之</button>
+        <button class="text-btn">朝花夕拾</button>
+        <button class="btn-rounded">A</button>
+        <button class="text-btn">什袭珍藏</button>
+        <button class="text-btn">似曾相识</button>
       </div>
     </div>
   </div>
@@ -27,21 +23,24 @@ export default {
 
 <style>
 .mono-dreams {
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin: 0 40px;
 }
 .dreams-header {
   display: flex;
   justify-content: space-around;
 }
-.dreams-footer {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
+.dreams-contents {
+  flex-grow: 1;
 }
-
-.dreams-footer .left {
+.op-btns {
+  width: 100%;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: nowrap;
 }
 </style>

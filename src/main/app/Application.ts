@@ -35,7 +35,7 @@ export default class Application extends EventEmitter {
         });
     }
 
-    private _onReady() {
+    _onReady() {
         this.mMainWindow = new MainWindow({
             page: isDev ? `http://localhost:9080` : `file://${__dirname}/index.html`,
             windowOptions: defaultWindowOptions,
